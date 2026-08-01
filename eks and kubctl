@@ -1,0 +1,23 @@
+# 1. kubectl डाउनलोड और इंस्टॉल करें (सही URL के साथ)
+curl -O https://amazonaws.com
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin
+kubectl version --client
+
+# 2. eksctl डाउनलोड और इंस्टॉल करें (सही URL के साथ)
+curl --silent --location "https://github.com(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl version
+
+
+
+
+eksctl create cluster --name main-devops-cluster --region us-east-1 --node-type t3.medium --nodes 2
+
+
+aws eks update-kubeconfig --region us-east-1 --name main-devops-cluster
+
+kubectl create namespace medical-apps
+kubectl create namespace payment-apps
+
+
