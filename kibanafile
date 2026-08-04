@@ -1,0 +1,34 @@
+
+# 1. SYSTEM UPDATE & JAVA 21 INSTALLATION
+
+sudo apt update
+sudo apt install fontconfig openjdk-21-jre -y
+
+
+# 2. ELASTICSEARCH INSTALLATION & MANAGEMENT
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
+sudo apt-get update
+
+#Here we find a password for kibana homepage
+sudo apt-get install elasticsearch -y
+sudo systemctl enable elasticsearch
+sudo systemctl start elasticsearch
+sudo systemctl status elasticsearch
+
+# 3. KIBANA INSTALLATION & CONFIGURATION
+
+sudo apt-get install kibana -y
+sudo systemctl enable kibana
+sudo systemctl start kibana
+sudo systemctl status kibana
+# In Configuration file set server.host: "0.0.0.0" in place of Server.host: "localhost"
+sudo nano /etc/kibana/kibana.yml
+sudo systemctl restart kibana
+journalctl -u kibana -n 30 --no-pager
+# apt-get purge kibana -y ( renew the kibana)
+# NOTES:
+# - AWS EC2 Security Group  Port 5601  Open 
+# -  http://<Your_Public_IP>:5601 
+# TO get the token for kibana homepage 
+sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
